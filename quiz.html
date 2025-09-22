@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz Game</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="quiz.css">
+</head>
+<body>
+    <div class="start-screen" id="start-screen">
+        <img src="img/logo.png" alt="Quiz Game" class="logo">
+        <p>Test your knowledge with 10 questions!</p>
+        <p>Each question has 45 seconds</p>
+        <p id="warning-msg" style="color: #ff4444; font-size: 14px; margin-top: 10px;">⚠️ You can only take this quiz once!</p>
+        <button class="start-btn" onclick="startGame()">START QUIZ</button>
+    </div>
+    
+    <div class="quiz-container" id="quiz-container" style="display: none;">
+        <div class="question-counter">
+            <span id="current-question">1</span> / 10
+        </div>
+        
+        <div class="timer">
+            <span id="time-left">45</span>s
+        </div>
+        
+        <div class="question-box">
+            <h2 id="question-text">What is the capital of France?</h2>
+        </div>
+        
+        <div class="answers-grid">
+            <button class="answer-btn red" onclick="selectAnswer(0)">London</button>
+            <button class="answer-btn blue" onclick="selectAnswer(1)">Paris</button>
+            <button class="answer-btn yellow" onclick="selectAnswer(2)">Berlin</button>
+            <button class="answer-btn green" onclick="selectAnswer(3)">Madrid</button>
+        </div>
+        
+        <div class="score">
+            Score: <span id="score">0</span>
+        </div>
+    </div>
+    
+    <script src="quiz.js"></script>
+</body>
+</html>
