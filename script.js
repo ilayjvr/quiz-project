@@ -56,6 +56,7 @@ let score = 0;
 let timer;
 let timeLeft = 45;
 let gameStarted = false;
+let musicTimeouts = [];
 
 function selectAnswer(answerIndex) {
     clearInterval(timer);
@@ -209,6 +210,21 @@ function playSound(type) {
         gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.15);
         osc.start(ctx.currentTime);
         osc.stop(ctx.currentTime + 0.15);
+    } else if (type === 'finish') {
+        // Generate celebration finish sound
+        const ctx = new (window.AudioContext || window.webkitAudioContext)();
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+        osc.connect(gain);
+        gain.connect(ctx.destination);
+        osc.frequency.setValueAtTime(523, ctx.currentTime);
+        osc.frequency.setValueAtTime(659, ctx.currentTime + 0.2);
+        osc.frequency.setValueAtTime(784, ctx.currentTime + 0.4);
+        osc.frequency.setValueAtTime(1047, ctx.currentTime + 0.6);
+        gain.gain.setValueAtTime(0.2, ctx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 1.0);
+        osc.start(ctx.currentTime);
+        osc.stop(ctx.currentTime + 1.0);
     }
 }
 
@@ -237,14 +253,22 @@ function startBackgroundMusic() {
         createTone(220, now + 1.2, 0.2);
         createTone(440, now + 1.5, 0.2);
         
-        setTimeout(playLoop, 1800);
+        const timeout = setTimeout(playLoop, 1800);
+        musicTimeouts.push(timeout);
     }
     
     playLoop();
 }
 
+function stopBackgroundMusic() {
+    musicTimeouts.forEach(timeout => clearTimeout(timeout));
+    musicTimeouts = [];
+}
+
 function showResults() {
     localStorage.setItem('quizCompleted', 'true');
+    stopBackgroundMusic();
+    playSound('finish');
     
     document.querySelector('.quiz-container').innerHTML = `
         <h1>Quiz Complete!</h1>
